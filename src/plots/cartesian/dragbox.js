@@ -500,16 +500,16 @@ function makeDragBox(gd, plotinfo, x, y, w, h, ns, ew) {
         var yfrac = (gbb.bottom - e.clientY) / gbb.height;
         var i;
 
-        function zoomWheelOneAxis(ax, centerFraction, zoom) {
+        function zoomWheelOneAxis(ax, centerFraction, zoom, idxsToUpdate) {
             if(ax.fixedrange) return;
 
             var axRange = Lib.simpleMap(ax.range, ax.r2l);
             var v0 = axRange[0] + (axRange[1] - axRange[0]) * centerFraction;
-            function doZoom(v) { return ax.l2r(v0 + (v - v0) * zoom); }
-            if (axRange[1] - axRange[0] > 8 || zoom > 1)
-            {
-                ax.range = axRange.map(doZoom);
+            function doZoom(v) { 
+                return ax.l2r(v0 + (v - v0) * zoom); 
             }
+            for (let idx of idxsToUpdate)
+                ax.range[idx] = doZoom(ax.Range[idx]);
         }
 
         if(editX) {
@@ -517,24 +517,68 @@ function makeDragBox(gd, plotinfo, x, y, w, h, ns, ew) {
             // zoom it about the center
             if(!ew) xfrac = 0.5;
 
+            let xAxisBoundViolated = false;
             for(i = 0; i < xaxes.length; i++) {
-                zoomWheelOneAxis(xaxes[i], xfrac, zoom);
+                let xMin = xaxes[i].range[0];
+                let xMax = xaxes[i].range[1];
+
+                let xRangesToUpdate = [];
+                if (xMin > 0 && xMax > xaxes[i].categoryarray.length)
+                {
+                    xAxisBoundViolated = true;
+                    xRangesToUpdate.push(0);
+                }
+                if (xMax < xaxes[i].categoryarray.length + 1)
+                {
+                    xAxisBoundViolated = true;
+                    xRangesToUpdate.push(1);
+                }
+
+                if (xMax = xMin < 8 && zoom < 1)
+                    xAxisBoundViolated = true;
+                else
+                    zoomWheelOneAxis(xaxes[i], xfrac, zoom, xRangesToUpdate);
             }
             updateMatchedAxRange('x');
 
-            scrollViewBox[2] *= zoom;
-            scrollViewBox[0] += scrollViewBox[2] * xfrac * (1 / zoom - 1);
+            if (!xAxisBoundViolated)
+            {
+                scrollViewBox[2] *= zoom;
+                scrollViewBox[0] += scrollViewBox[2] * xfrac * (1 / zoom - 1); 
+            }
         }
         if(editY) {
             if(!ns) yfrac = 0.5;
 
+            let yAxisBoundViolated = false;
             for(i = 0; i < yaxes.length; i++) {
-                zoomWheelOneAxis(yaxes[i], yfrac, zoom);
+                let yMin = yaxes[i].range[0];
+                let yMax = yaxes[i].range[1];
+
+                let yRangesToUpdate = [];
+                if (yMin > 0 && yMax > yaxes[i].categoryarray.length)
+                {
+                    yAxisBoundViolated = true;
+                    yRangesToUpdate.push(0);
+                }
+                if (yMax < yaxes[i].categoryarray.length + 1)
+                {
+                    yAxisBoundViolated = true;
+                    yRangesToUpdate.push(1);
+                }
+
+                if (yMax = yMin < 8 && zoom < 1)
+                    yAxisBoundViolated = true;
+                else
+                    zoomWheelOneAxis(yaxes[i], yfrac, zoom, yRangesToUpdate);
             }
             updateMatchedAxRange('y');
 
-            scrollViewBox[3] *= zoom;
-            scrollViewBox[1] += scrollViewBox[3] * (1 - yfrac) * (1 / zoom - 1);
+            if (!yAxisBoundViolated)
+            {
+                scrollViewBox[3] *= zoom;
+                scrollViewBox[1] += scrollViewBox[3] * (1 - yfrac) * (1 / zoom - 1);
+            }
         }
 
         // viewbox redraw at first
