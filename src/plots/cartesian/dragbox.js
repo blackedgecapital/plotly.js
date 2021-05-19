@@ -1059,8 +1059,18 @@ function zoomAxRanges(axList, r0Fraction, r1Fraction, updates, linkedAxes) {
         } else {
             var axRangeLinear0 = axi._rl[0];
             var axRangeLinearSpan = axi._rl[1] - axRangeLinear0;
-            updates[axi._name + '.range[0]'] = axi.l2r(axRangeLinear0 + axRangeLinearSpan * r0Fraction);
-            updates[axi._name + '.range[1]'] = axi.l2r(axRangeLinear0 + axRangeLinearSpan * r1Fraction);
+            var updatedR0 = axRangeLinear0 + axRangeLinearSpan * r0Fraction;
+            var updatedR1 = axRangeLinear0 + axRangeLinearSpan * r1Fraction;
+            if (updatedR1 - updatedR0 > 8)
+            {
+                updates[axi._name + '.range[0]'] = axi.l2r(axRangeLinear0 + axRangeLinearSpan * r0Fraction);
+                updates[axi._name + '.range[1]'] = axi.l2r(axRangeLinear0 + axRangeLinearSpan * r1Fraction);
+            }
+            else
+            {
+                updates[axi._name + '.range[0]'] = axi._rl[0];
+                updates[axi._name + '.range[1]'] = axi._rl[1];
+            }
         }
     }
 
