@@ -80,7 +80,7 @@ module.exports = extendFlat({
     zsmooth: {
         valType: 'enumerated',
         values: ['fast', 'best', false],
-        dflt: false,
+        dflt: true,
         role: 'style',
         editType: 'calc',
         description: [
