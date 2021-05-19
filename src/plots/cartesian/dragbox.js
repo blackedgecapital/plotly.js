@@ -509,7 +509,7 @@ function makeDragBox(gd, plotinfo, x, y, w, h, ns, ew) {
                 return ax.l2r(v0 + (v - v0) * zoom); 
             }
             for (let idx of idxsToUpdate)
-                ax.range[idx] = doZoom(ax.Range[idx]);
+                ax.range[idx] = doZoom(axRange[idx]);
         }
 
         if(editX) {
@@ -526,11 +526,6 @@ function makeDragBox(gd, plotinfo, x, y, w, h, ns, ew) {
 
                 if (!(xMin < 0 && zoom > 1))
                     xRangesToUpdate.push(0);
-                else
-                    xAxisBoundViolated = true;
-
-                if (!(xMax > xaxes[i].categories.length + 1 && zoom > 1))
-                    xRangesToUpdate.push(1);
                 else
                     xAxisBoundViolated = true;
 
@@ -556,16 +551,16 @@ function makeDragBox(gd, plotinfo, x, y, w, h, ns, ew) {
                 let yMax = yaxes[i].range[1];
 
                 let yRangesToUpdate = [];
+
                 if (!(yMin < 0 && zoom > 1))
-                {
-                    yAxisBoundViolated = true;
                     yRangesToUpdate.push(0);
-                }
-                if (!(yMax > yaxes[i].categoryarray.length + 1 && zoom > 1))
-                {
+                else
                     yAxisBoundViolated = true;
+
+                if (!(yMax > yaxes[i].categoryarray.length + 1 && zoom > 1))
                     yRangesToUpdate.push(1);
-                }
+                else
+                    yAxisBoundViolated = true;
 
                 if (yMax - yMin < 8 && zoom < 1)
                     yAxisBoundViolated = true;
