@@ -524,15 +524,8 @@ function makeDragBox(gd, plotinfo, x, y, w, h, ns, ew) {
 
                 let xRangesToUpdate = [];
 
-                if (!(xMin < 0 && zoom > 1))
-                    xRangesToUpdate.push(0);
-                else
-                    xAxisBoundViolated = true;
-
-                if (!(xMax > xaxes[i].MaxAxisValue + 1 && zoom > 1))
-                    xRangesToUpdate.push(1);
-                else
-                    xAxisBoundViolated = true;
+                xRangesToUpdate.push(0);
+                xRangesToUpdate.push(1);
 
                 if (xMax - xMin < 15 && zoom < 1)
                     xAxisBoundViolated = true;

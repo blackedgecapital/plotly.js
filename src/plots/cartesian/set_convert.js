@@ -907,8 +907,6 @@ module.exports = function setConvert(ax, fullLayout) {
             }
         }
     };
-
-    ax.MaxAxisValue = ax._categories.length;
     
     // sort the axis (and all the matching ones) by _initialCategories
     // returns the indices of the traces affected by the reordering
