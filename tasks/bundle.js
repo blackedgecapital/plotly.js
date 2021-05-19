@@ -54,35 +54,35 @@ tasks.push(function(cb) {
     }, cb);
 });
 
-// Browserify the geo assets
-tasks.push(function(cb) {
-    _bundle(constants.pathToPlotlyGeoAssetsSrc, constants.pathToPlotlyGeoAssetsDist, {
-        standalone: 'PlotlyGeoAssets'
-    }, cb);
-});
+// // Browserify the geo assets
+// tasks.push(function(cb) {
+//     _bundle(constants.pathToPlotlyGeoAssetsSrc, constants.pathToPlotlyGeoAssetsDist, {
+//         standalone: 'PlotlyGeoAssets'
+//     }, cb);
+// });
 
-// Browserify plotly.js with meta and output plot-schema JSON
-tasks.push(function(cb) {
-    _bundle(constants.pathToPlotlyIndex, constants.pathToPlotlyDistWithMeta, {
-        standalone: 'Plotly',
-        debug: DEV,
-        noCompress: true
-    }, function() {
-        makeSchema(constants.pathToPlotlyDistWithMeta, constants.pathToSchema)();
-        cb();
-    });
-});
+// // Browserify plotly.js with meta and output plot-schema JSON
+// tasks.push(function(cb) {
+//     _bundle(constants.pathToPlotlyIndex, constants.pathToPlotlyDistWithMeta, {
+//         standalone: 'Plotly',
+//         debug: DEV,
+//         noCompress: true
+//     }, function() {
+//         makeSchema(constants.pathToPlotlyDistWithMeta, constants.pathToSchema)();
+//         cb();
+//     });
+// });
 
-// Browserify the plotly.js partial bundles
-constants.partialBundlePaths.forEach(function(pathObj) {
-    tasks.push(function(cb) {
-        _bundle(pathObj.index, pathObj.dist, {
-            standalone: 'Plotly',
-            debug: DEV,
-            pathToMinBundle: pathObj.distMin
-        }, cb);
-    });
-});
+// // Browserify the plotly.js partial bundles
+// constants.partialBundlePaths.forEach(function(pathObj) {
+//     tasks.push(function(cb) {
+//         _bundle(pathObj.index, pathObj.dist, {
+//             standalone: 'Plotly',
+//             debug: DEV,
+//             pathToMinBundle: pathObj.distMin
+//         }, cb);
+//     });
+// });
 
 runSeries(tasks, function(err) {
     if(err) throw err;
