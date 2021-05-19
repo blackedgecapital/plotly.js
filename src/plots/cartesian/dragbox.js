@@ -556,12 +556,12 @@ function makeDragBox(gd, plotinfo, x, y, w, h, ns, ew) {
                 let yMax = yaxes[i].range[1];
 
                 let yRangesToUpdate = [];
-                if (yMin > 0 && yMax > yaxes[i].categoryarray.length)
+                if (!(yMin < 0 && zoom > 1))
                 {
                     yAxisBoundViolated = true;
                     yRangesToUpdate.push(0);
                 }
-                if (yMax < yaxes[i].categoryarray.length + 1)
+                if (!(yMax > yaxes[i].categoryarray.length + 1 && zoom > 1))
                 {
                     yAxisBoundViolated = true;
                     yRangesToUpdate.push(1);
