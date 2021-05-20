@@ -439,6 +439,12 @@ module.exports = function setConvert(ax, fullLayout) {
         return (ax.r2l(v) - rl0) / (rl1 - rl0);
     };
 
+    ax.getCategoriesLength = function() {
+        if (ax._categories)
+            return ax._categories.length;
+        else 
+            return 0;
+    };
     /*
      * cleanRange: make sure range is a couplet of valid & distinct values
      * keep numbers away from the limits of floating point numbers,
