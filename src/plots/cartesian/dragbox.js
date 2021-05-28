@@ -500,7 +500,7 @@ function makeDragBox(gd, plotinfo, x, y, w, h, ns, ew) {
         var yfrac = (gbb.bottom - e.clientY) / gbb.height;
         var i;
 
-        function zoomWheelOneAxis(ax, centerFraction, zoom, idxsToUpdate) {
+        function zoomWheelOneAxis(ax, centerFraction, zoom, idxsToUpdate, max) {
             if(ax.fixedrange) return;
 
             var axRange = Lib.simpleMap(ax.range, ax.r2l);
@@ -509,7 +509,15 @@ function makeDragBox(gd, plotinfo, x, y, w, h, ns, ew) {
                 return ax.l2r(v0 + (v - v0) * zoom); 
             }
             for (let idx of idxsToUpdate)
-                ax.range[idx] = doZoom(axRange[idx]);
+            {
+                let rangeValue = doZoom(axRange[idx]);
+                if (rangeValue < 0)
+                    ax.range[idx] = 0;
+                else if (rangeValue > max)
+                    ax.range[idx] = max;
+                else
+                    ax.range[idx] = rangeValue;
+            }
         }
 
         if(editX) {
@@ -529,7 +537,7 @@ function makeDragBox(gd, plotinfo, x, y, w, h, ns, ew) {
                 else
                     xAxisBoundViolated = true;
 
-                if (!(xMax > xaxes[i].getCategoriesLength() + 1 && zoom > 1))
+                if (!(xMax > xaxes[i].getCategoriesLength() && zoom > 1))
                     xRangesToUpdate.push(1);
                 else
                     xAxisBoundViolated = true;
@@ -537,7 +545,7 @@ function makeDragBox(gd, plotinfo, x, y, w, h, ns, ew) {
                 if (xMax - xMin < 15 && zoom < 1)
                     xAxisBoundViolated = true;
                 else
-                    zoomWheelOneAxis(xaxes[i], xfrac, zoom, xRangesToUpdate);
+                    zoomWheelOneAxis(xaxes[i], xfrac, zoom, xRangesToUpdate, xaxes[i].getCategoriesLength() - 1);
             }
             updateMatchedAxRange('x');
 
@@ -562,15 +570,15 @@ function makeDragBox(gd, plotinfo, x, y, w, h, ns, ew) {
                 else
                     yAxisBoundViolated = true;
 
-                if (!(yMax > yaxes[i].categoryarray.length + 1 && zoom > 1))
+                if (!(yMax > yaxes[i].categoryarray.length - 1 && zoom > 1))
                     yRangesToUpdate.push(1);
                 else
                     yAxisBoundViolated = true;
 
-                if (yMax - yMin < 8 && zoom < 1)
+                if (yMax - yMin < 10 && zoom < 1)
                     yAxisBoundViolated = true;
                 else
-                    zoomWheelOneAxis(yaxes[i], yfrac, zoom, yRangesToUpdate);
+                    zoomWheelOneAxis(yaxes[i], yfrac, zoom, yRangesToUpdate, yaxes[i].categoryarray.length - 1);
             }
             updateMatchedAxRange('y');
 
