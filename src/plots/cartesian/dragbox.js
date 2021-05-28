@@ -798,6 +798,8 @@ function makeDragBox(gd, plotinfo, x, y, w, h, ns, ew) {
             Axes.drawOne(gd, ax, {skipTitle: true});
             updates[ax._name + '.range[0]'] = ax.range[0];
             updates[ax._name + '.range[1]'] = ax.range[1];
+            updates[ax._name + 'value[0]'] = ax.getCategoryAtIndex[ax.range[0]];
+            updates[ax._name + 'value[1]'] = ax.getCategoryAtIndex[ax.range[1]];
         }
 
         Axes.redrawComponents(gd, activeAxIds);
