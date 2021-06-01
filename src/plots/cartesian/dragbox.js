@@ -511,10 +511,15 @@ function makeDragBox(gd, plotinfo, x, y, w, h, ns, ew) {
             }
 
             let rangeMinValue = doZoom(axRange[0]);
-            if ((rangeMinValue < 0 && xAxis) || (rangeMinValue < -0.5 && !xAxis))
+            if (rangeMinValue < 0 && xAxis)
             {
                 axisBoundViolated = true;
                 ax.range[0] = 0;
+            }
+            else if (rangeMinValue < -0.5 && !xAxis)
+            {
+                axisBoundViolated = true;
+                ax.range[0] = -0.5;
             }
             else 
                 ax.range[0] = rangeMinValue;
