@@ -500,7 +500,7 @@ function makeDragBox(gd, plotinfo, x, y, w, h, ns, ew) {
         var yfrac = (gbb.bottom - e.clientY) / gbb.height;
         var i;
 
-        function zoomWheelOneAxis(ax, centerFraction, zoom, max) {
+        function zoomWheelOneAxis(ax, centerFraction, zoom, max, xAxis) {
             if(ax.fixedrange) return;
 
             var axisBoundViolated = false;
@@ -511,7 +511,7 @@ function makeDragBox(gd, plotinfo, x, y, w, h, ns, ew) {
             }
 
             let rangeMinValue = doZoom(axRange[0]);
-            if (rangeMinValue < 0)
+            if ((rangeMinValue < 0 && xAxis) || (rangeMinValue < -0.5 && !xAxis))
             {
                 axisBoundViolated = true;
                 ax.range[0] = 0;
@@ -544,7 +544,7 @@ function makeDragBox(gd, plotinfo, x, y, w, h, ns, ew) {
                 if (xMax - xMin < 15 && zoom < 1)
                     xAxisBoundViolated = true;
                 else
-                    xAxisBoundViolated = zoomWheelOneAxis(xaxes[i], xfrac, zoom, xaxes[i].getCategoriesLength() - 2);
+                    xAxisBoundViolated = zoomWheelOneAxis(xaxes[i], xfrac, zoom, xaxes[i].getCategoriesLength() - 2, true);
             }
             updateMatchedAxRange('x');
 
@@ -565,7 +565,7 @@ function makeDragBox(gd, plotinfo, x, y, w, h, ns, ew) {
                 if (yMax - yMin < 10 && zoom < 1)
                     yAxisBoundViolated = true;
                 else
-                    yAxisBoundViolated = zoomWheelOneAxis(yaxes[i], yfrac, zoom, yaxes[i].categoryarray.length - 1);
+                    yAxisBoundViolated = zoomWheelOneAxis(yaxes[i], yfrac, zoom, yaxes[i].categoryarray.length - 0.5, false);
             }
             updateMatchedAxRange('y');
 
@@ -793,8 +793,8 @@ function makeDragBox(gd, plotinfo, x, y, w, h, ns, ew) {
             Axes.drawOne(gd, ax, {skipTitle: true});
             updates[ax._name + '.range[0]'] = ax.range[0];
             updates[ax._name + '.range[1]'] = ax.range[1];
-            updates[ax._name + 'value[0]'] = ax.getCategoryAtIndex(ax.range[0]);
-            updates[ax._name + 'value[1]'] = ax.getCategoryAtIndex(ax.range[1]);
+            updates[ax._name + '.value[0]'] = ax.getCategoryAtIndex(ax.range[0]);
+            updates[ax._name + '.value[1]'] = ax.getCategoryAtIndex(ax.range[1]);
         }
 
         Axes.redrawComponents(gd, activeAxIds);
