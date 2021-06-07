@@ -140,6 +140,7 @@ function prepSelect(e, startX, startY, dragOptions, mode) {
         if(isRectMode) {
             fillRangeItems = function(eventData, poly) {
                 var ranges = eventData.range = {};
+                var values = eventData.values = {};
 
                 for(i = 0; i < allAxes.length; i++) {
                     var ax = allAxes[i];
@@ -148,6 +149,10 @@ function prepSelect(e, startX, startY, dragOptions, mode) {
                     ranges[ax._id] = [
                         p2r(ax, poly[axLetter + 'min']),
                         p2r(ax, poly[axLetter + 'max'])
+                    ].sort(ascending);
+                    values[ax._id] = [
+                        ax.getCategoryAtIndex(poly[axLetter + 'min']),
+                        ax.getCategoryAtIndex(poly[axLetter + 'max']),
                     ].sort(ascending);
                 }
             };
