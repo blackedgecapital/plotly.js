@@ -151,8 +151,8 @@ function prepSelect(e, startX, startY, dragOptions, mode) {
                         p2r(ax, poly[axLetter + 'max'])
                     ].sort(ascending);
                     values[ax._id] = [
-                        ax.getCategoryAtIndex(poly[axLetter + 'min']),
-                        ax.getCategoryAtIndex(poly[axLetter + 'max']),
+                        ax.getCategoryAtIndex(ranges[ax._id][0]),
+                        ax.getCategoryAtIndex(ranges[ax._id][1]),
                     ].sort(ascending);
                 }
             };
