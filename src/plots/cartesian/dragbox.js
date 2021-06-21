@@ -511,12 +511,12 @@ function makeDragBox(gd, plotinfo, x, y, w, h, ns, ew) {
             }
 
             let rangeMinValue = doZoom(axRange[0]);
-            if (rangeMinValue < 0 && xAxis)
+            if (rangeMinValue < 0 && xAxis && zoom > 1)
             {
                 axisBoundViolated = true;
                 ax.range[0] = 0;
             }
-            else if (rangeMinValue < -0.5 && !xAxis)
+            else if (rangeMinValue < -0.5 && !xAxis && zoom > 1)
             {
                 axisBoundViolated = true;
                 ax.range[0] = -0.5;
@@ -525,7 +525,7 @@ function makeDragBox(gd, plotinfo, x, y, w, h, ns, ew) {
                 ax.range[0] = rangeMinValue;
 
             let rangeMaxValue = doZoom(axRange[1]);
-            if (rangeMaxValue > max)
+            if (rangeMaxValue > max && zoom > 1)
             {
                 axisBoundViolated = true;                   
                 ax.range[1] = max;
@@ -796,10 +796,19 @@ function makeDragBox(gd, plotinfo, x, y, w, h, ns, ew) {
             var axId = activeAxIds[i];
             var ax = getFromId(gd, axId);
             Axes.drawOne(gd, ax, {skipTitle: true});
-            updates[ax._name + '.range[0]'] = ax.range[0];
-            updates[ax._name + '.range[1]'] = ax.range[1];
-            updates[ax._name + '.value[0]'] = ax.getCategoryAtIndex(ax.range[0]);
-            updates[ax._name + '.value[1]'] = ax.getCategoryAtIndex(ax.range[1]);
+            let lowRange = ax.range[0];
+            let highRange = ax.range[1];
+
+            if (lowRange < 0)
+                lowRange = 0;
+            
+            if (highRange > ax.getCategoriesLength())
+                highRange = ax.getCategoriesLength() - 1;
+
+            updates[ax._name + '.range[0]'] = lowRange;
+            updates[ax._name + '.range[1]'] = highRange;
+            updates[ax._name + '.value[0]'] = ax.getCategoryAtIndex(lowRange);
+            updates[ax._name + '.value[1]'] = ax.getCategoryAtIndex(highRange);
         }
 
         Axes.redrawComponents(gd, activeAxIds);
