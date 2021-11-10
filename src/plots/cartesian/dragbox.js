@@ -572,11 +572,13 @@ function makeDragBox(gd, plotinfo, x, y, w, h, ns, ew) {
                 let yMin = yaxes[i].range[0];
                 let yMax = yaxes[i].range[1];
 
-                if (yMax - yMin < 10 && zoom < 1)
+                let hasCategoryArray = yaxes[i].categoryarray;
+
+                if (yMax - yMin < 10 && zoom < 1 && hasCategoryArray)
                     yAxisBoundViolated = true;
                 else
                 {
-                    if (yaxes[i].categoryarray)
+                    if (hasCategoryArray)
                         yAxisBoundViolated = zoomWheelOneAxis(yaxes[i], yfrac, zoom, yaxes[i].categoryarray.length - 0.5, false, true);
                     else
                         zoomWheelOneAxis(yaxes[i], yfrac, zoom, 0, false, false); 
