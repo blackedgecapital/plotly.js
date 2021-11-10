@@ -551,9 +551,9 @@ function makeDragBox(gd, plotinfo, x, y, w, h, ns, ew) {
                 else
                 {
                     if (xaxes[i].getCategoriesLength() == 0)
-                        zoomWheelOneAxis(xaxes[i], xfrac, zoom, xaxes[i].getCategoriesLength() - 2, xAxis=true, checkForViolation=false);
+                        zoomWheelOneAxis(xaxes[i], xfrac, zoom, xaxes[i].getCategoriesLength() - 2, true, false);
                     else
-                        xAxisBoundViolated = zoomWheelOneAxis(xaxes[i], xfrac, zoom, xaxes[i].getCategoriesLength() - 2, xAxis=true, checkForViolation=true);
+                        xAxisBoundViolated = zoomWheelOneAxis(xaxes[i], xfrac, zoom, xaxes[i].getCategoriesLength() - 2, true, true);
                 }
             }
             updateMatchedAxRange('x');
@@ -577,9 +577,9 @@ function makeDragBox(gd, plotinfo, x, y, w, h, ns, ew) {
                 else
                 {
                     if (yaxes[i].categoryarray)
-                        yAxisBoundViolated = zoomWheelOneAxis(yaxes[i], yfrac, zoom, yaxes[i].categoryarray.length - 0.5, xAxis=false, checkForViolation=true);
+                        yAxisBoundViolated = zoomWheelOneAxis(yaxes[i], yfrac, zoom, yaxes[i].categoryarray.length - 0.5, false, true);
                     else
-                        zoomWheelOneAxis(yaxes[i], yfrac, zoom, 0, xAxis=false, checkForViolation=false); 
+                        zoomWheelOneAxis(yaxes[i], yfrac, zoom, 0, false, false); 
                 }
             }
             updateMatchedAxRange('y');
