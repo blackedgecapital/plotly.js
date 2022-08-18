@@ -2321,8 +2321,8 @@ function guiEdit(func) {
 // If no `attr` we use `match[1] + '.uirevision'`
 // Ordered by most common edits first, to minimize our search time
 var layoutUIControlPatterns = [
-    { pattern: /^hiddenlabels/, attr: 'legend.uirevision' },
-    { pattern: /^((x|y)axis\d*)\.((auto)?range|title\.text)/ },
+    {pattern: /^hiddenlabels/, attr: 'legend.uirevision'},
+    {pattern: /^((x|y)axis\d*)\.((auto)?range|value|title\.text)/},
 
     // showspikes and modes include those nested inside scenes
     { pattern: /axis\d*\.showspikes$/, attr: 'modebar.uirevision' },

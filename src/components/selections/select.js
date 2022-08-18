@@ -1512,6 +1512,7 @@ function computeRectAndRanges(poly) {
 function makeFillRangeItems(allAxes) {
     return function(eventData, poly) {
         var range;
+        var value;
         var lassoPoints;
 
         for(var i = 0; i < allAxes.length; i++) {
@@ -1529,6 +1530,10 @@ function makeFillRangeItems(allAxes) {
                         p2r(ax, min),
                         p2r(ax, max)
                     ].sort(ascending);
+                    value[id] = [
+                        ax.getCategoryAtIndex(range[id][0]),
+                        ax.getCategoryAtIndex(range[id][1]),
+                    ].sort(ascending);
                 }
             } else {
                 if(!lassoPoints) lassoPoints = {};
@@ -1538,6 +1543,7 @@ function makeFillRangeItems(allAxes) {
 
         if(range) {
             eventData.range = range;
+            eventData.value = value;
         }
 
         if(lassoPoints) {
