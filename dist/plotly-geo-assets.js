@@ -17,7 +17,7 @@
 return /******/ (function() { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 788:
+/***/ 472:
 /***/ (function(__unused_webpack_module, exports) {
 
 "use strict";
@@ -28,7 +28,7 @@ exports.version = '2.33.0';
 
 /***/ }),
 
-/***/ 263:
+/***/ 680:
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 exports.world_110m = __webpack_require__(920)
@@ -201,8 +201,8 @@ var __webpack_exports__ = {};
 var exports = __webpack_exports__;
 
 
-var saneTopojson = __webpack_require__(263);
-exports.version = __webpack_require__(788).version;
+var saneTopojson = __webpack_require__(680);
+exports.version = __webpack_require__(472).version;
 exports.topojson = saneTopojson;
 }();
 /******/ 	return __webpack_exports__;
